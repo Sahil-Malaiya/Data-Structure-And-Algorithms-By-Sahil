@@ -1,17 +1,35 @@
 public class KnapSackDp {
-    public static int knapsack(int val[], int wt[], int c, int n) {
+    // public static int knapsack(int val[], int wt[], int c, int n) {
+    // if (n == 0 || c == 0) {
+    // return 0;
+    // }
+    // if (wt[n - 1] <= c) {
+    // // include
+    // int ans1 = val[n - 1] + knapsack(val, wt, c - wt[n - 1], n - 1);
+    // // exclude
+    // int ans2 = knapsack(val, wt, c, n - 1);
+    // return Math.max(ans1, ans2);
+    // } else {
+    // // Not valid
+    // return knapsack(val, wt, c, n - 1);
+    // }
+    // }
+    public static int knapsack(int val[], int wt[], int c, int n, int dp[][]) {
         if (n == 0 || c == 0) {
             return 0;
         }
+        if (dp[n][c] != -1) {
+            return dp[n][c];
+        }
         if (wt[n - 1] <= c) {
-            // include
-            int ans1 = val[n - 1] + knapsack(val, wt, c - wt[n - 1], n - 1);
+            int ans1 = val[n - 1] + knapsack(val, wt, c - wt[n - 1], n - 1, dp);
             // exclude
-            int ans2 = knapsack(val, wt, c, n - 1);
-            return Math.max(ans1, ans2);
+            int ans2 = knapsack(val, wt, c, n - 1, dp);
+            dp[n][c] = Math.max(ans1, ans2);
+            return dp[n][c];
         } else {
-            // Not valid
-            return knapsack(val, wt, c, n - 1);
+            dp[n][c] = knapsack(val, wt, c, n - 1, dp);
+            return dp[n][c];
         }
     }
 
@@ -19,6 +37,14 @@ public class KnapSackDp {
         int val[] = { 15, 14, 10, 45, 30 };
         int wt[] = { 2, 5, 1, 3, 4 };
         int c = 7;
-        System.out.print(knapsack(val, wt, c, val.length));
+
+        // MemoiZation
+        int dp[][] = new int[val.length + 1][c + 1];
+        for (int i = 0; i < dp.length; i++) {
+            for (int j = 0; j < dp[0].length; j++) {
+                dp[i][j] = -1;
+            }
+        }
+        System.out.print(knapsack(val, wt, c, val.length, dp));
     }
 }
