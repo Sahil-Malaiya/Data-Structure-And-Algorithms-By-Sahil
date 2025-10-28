@@ -50,7 +50,6 @@ public class KnapSackDp {
             }
         }
         return dp[n][c];
-
     }
 
     public static void main(String[] args) {
